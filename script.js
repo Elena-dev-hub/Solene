@@ -62,11 +62,9 @@ function openLogin(preselect){
  if(!preselect && localStorage.getItem('soleneRole')){
    const role=localStorage.getItem('soleneRole');
    const names={solenista:'Solenista',especialista:'Mentora / Especialista',instituicao:'Instituição'};
-<<<<<<< HEAD
-   openModal(`<button class="modal-close" onclick="closeModal()">×</button><span class="badge">CONTA ATIVA</span><h2 class="title" style="fsizeont-:30px;margin:10px 0 4px">Você está na Solene como ${names[role]}</h2><p style="color:var(--muted);font-size:13px;line-height:1.5">Seu acesso é separado dos demais perfis. Para entrar como outro tipo de conta, saia primeiro.</p><button class="primary" style="width:100%;margin-top:15px" onclick="closeModal();go('perfil')">Abrir meu perfil</button><button class="secondary" style="width:100%;margin-top:8px;color:var(--p);border-color:var(--border);background:var(--white)" onclick="switchAccount()">Sair e entrar com outra conta</button>`);
-=======
+
    openModal(`<button class="modal-close" onclick="closeModal()">×</button><span class="badge">CONTA ATIVA</span><h2 class="title" style="font-size:30px;margin:10px 0 4px">Você está na Solene como ${names[role]}</h2><p style="color:var(--muted);font-size:13px;line-height:1.5">Seu acesso é separado dos demais perfis. Para entrar como outro tipo de conta, saia primeiro.</p><button class="primary" style="width:100%;margin-top:15px" onclick="closeModal();go('perfil')">Abrir meu perfil</button><button class="secondary" style="width:100%;margin-top:8px;color:var(--p);border-color:var(--border);background:var(--white)" onclick="switchAccount()">Sair e entrar com outra conta</button>`);
->>>>>>> origin/main
+  
    return;
  }
  openModal(`<button class="modal-close" onclick="closeModal()">×</button><span class="badge">ACESSO SOLENE</span><h2 class="title" style="font-size:30px;margin:10px 0 4px">Entrar na Solene</h2><p style="color:var(--muted);font-size:13px">Escolha o tipo de acesso. Cada conta terá um espaço próprio.</p><div class="login-choice"><button onclick="authForm('solenista')">👩🏻‍🎓 Solenista<small>Seu universo de oportunidades, jornada e conexões.</small></button><button onclick="authForm('especialista')">🎤 Palestrante / mentora<small>Seu palco, comunidade e conteúdos.</small></button><button onclick="authForm('instituicao')">🏛️ Instituição parceira<small>Seu painel de oportunidades, projetos e impacto.</small></button></div>`);
@@ -79,8 +77,6 @@ function authForm(role){
 function openGov(){
  openModal(`<button class="modal-close" onclick="closeModal()">×</button><div class="gov-screen"><div class="gov-logo">gov.br</div><p style="font-size:13px;color:#3f4851">Entrar com sua conta gov.br</p><label style="font-size:11px;font-weight:800;color:#27313a">CPF</label><input placeholder="Digite seu CPF"><button class="gov-btn" onclick="finishLogin('solenista','Gov.br')">Continuar</button><p style="font-size:10px;color:#68727d;line-height:1.5">Tela demonstrativa do fluxo de acesso. Não é a página oficial do gov.br.</p></div>`);
 }
-<<<<<<< HEAD
-
 
 function finishLogin(role, provider){
   const names = {
@@ -123,7 +119,7 @@ function finishLogin(role, provider){
       <input
         id="usernameInput"
         type="text"
-        placeholder="@seunome"
+        placeholder="Seu nome"
         maxlength="20"
       >
 
@@ -140,7 +136,7 @@ function finishLogin(role, provider){
 
 function saveUsername(role){
   const input = document.getElementById('usernameInput');
-  let username = input.value.trim();
+  const username = input.value.trim();
 
   if (!username) {
     toast('❌ Escolha um nome de usuário!');
@@ -151,6 +147,7 @@ function saveUsername(role){
   localStorage.setItem('soleneRole', role);
 
   const accountName = document.getElementById('accountName');
+
   if (accountName) {
     accountName.textContent = username;
   }
@@ -199,7 +196,6 @@ function openAccountMenu(){
   `);
 }
 
-
 function logout(){
   localStorage.removeItem('soleneUsername');
   localStorage.removeItem('soleneRole');
@@ -212,17 +208,6 @@ function logout(){
 
   closeModal();
   toast('Você saiu da sua conta.');
-=======
-function finishLogin(role,provider){
- const names={solenista:'Solenista',especialista:'Especialista',instituicao:'Instituição'};
- localStorage.setItem('soleneRole',role);
- const av=document.querySelector('.avatar');
- if(av) av.textContent=role==='solenista'?'✦':role==='especialista'?'✧':'◇';
- toast(`Entrada como ${names[role]}${provider?' via '+provider:''}!`);
- closeModal();
- setRole(role);
- go('perfil');
->>>>>>> origin/main
 }
 
 function profileMarkup(role){
