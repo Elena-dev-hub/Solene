@@ -34,11 +34,28 @@ document.querySelectorAll('.bottom button').forEach(b => {
 }
 
 window.addEventListener('DOMContentLoaded',()=>setRole(initialRole));
+
+function toggleFavorite(index, button){
+  let favorites = JSON.parse(localStorage.getItem('soleneFavorites') || '[]');
+
+  if (favorites.includes(index)) {
+    favorites = favorites.filter(i => i !== index);
+    button.textContent = '♡';
+    toast('Removido dos favoritos.');
+  } else {
+    favorites.push(index);
+    button.textContent = '❤️';
+    toast('Salvo nos favoritos! ❤️');
+  }
+
+  localStorage.setItem('soleneFavorites', JSON.stringify(favorites));
+}
+
 function renderOpps(){
  const area=document.getElementById('area').value;
  const list=opportunities.map((o,index)=>({o,index})).filter(x=>(currentType==='Todas'||x.o[1]===currentType)&&(area==='Todas'||x.o[2]===area));
  document.getElementById('oppList').innerHTML=list.map((x,i)=>{const o=x.o;return `
- <div class="opp"><div class="opp-icon">${o[4]}</div><div class="opp-content"><span class="badge">${o[1]}</span><h3>${o[0]}</h3><p>${o[3]} · ${o[2]}</p><div style="margin-top:7px;font-size:11px;color:var(--muted)">📅 Até 20/09 · ${x.index%2?'Online':'Híbrida'} · ${x.index%2?'Bolsa disponível':'Gratuita'}</div></div><div class="opp-actions"><button class="save" onclick="toast('Salvo nos favoritos!')">♡</button><button class="secondary" style="color:var(--p);border-color:var(--border);background:var(--white);padding:9px 13px" onclick="detail(${x.index})">Ver detalhes</button></div></div>`}).join('')||'<div class="card">Nenhuma oportunidade encontrada.</div>';
+ <div class="opp"><div class="opp-icon">${o[4]}</div><div class="opp-content"><span class="badge">${o[1]}</span><h3>${o[0]}</h3><p>${o[3]} · ${o[2]}</p><div style="margin-top:7px;font-size:11px;color:var(--muted)">📅 Até 20/09 · ${x.index%2?'Online':'Híbrida'} · ${x.index%2?'Bolsa disponível':'Gratuita'}</div></div><div class="opp-actions"><button class="save" onclick="toggleFavorite(${x.index}, this)">♡</button><button class="secondary" style="color:var(--p);border-color:var(--border);background:var(--white);padding:9px 13px" onclick="detail(${x.index})">Ver detalhes</button></div></div>`}).join('')||'<div class="card">Nenhuma oportunidade encontrada.</div>';
 }
 function openLive(){openModal(`<button class="modal-close" onclick="closeModal()">×</button><span class="badge">● AO VIVO</span><div class="live-screen" style="height:320px;border-radius:18px;margin-top:10px"><div class="video-frame"><div class="live-speaker"><div class="live-avatar">☼</div><div style="font-weight:800;margin-top:8px">Mulheres na Ciência</div><div style="font-size:12px;opacity:.8;margin-top:5px">Como começar na pesquisa?</div><button class="live-play" onclick="toast('A transmissão está conectada!')">▶</button></div></div></div><div style="padding-top:17px"><h2 class="title" style="font-size:26px">Como começar na pesquisa?</h2><div class="live-meta"><span>🔴 Ao vivo</span><span>•</span><span>19h</span><span>•</span><span>64 pessoas assistindo</span></div><p style="color:var(--muted);line-height:1.5">Conversa com pesquisadoras sobre primeiros projetos, iniciação científica e caminhos para entrar em um laboratório.</p><button class="primary" onclick="toast('Você entrou na live!')">Continuar assistindo</button></div>`)}
 function openResearch(type){openModal(`<button class="modal-close" onclick="closeModal()">×</button><span class="badge">PESQUISA</span><h2 class="title" style="font-size:28px;margin-top:10px">Laboratórios parceiros</h2><p style="color:var(--muted);line-height:1.5">Explore ambientes de pesquisa e veja o que cada área oferece.</p><div class="detail-list"><div>🧬 <b>Biotecnologia</b> projetos em genética e biologia molecular</div><div>🔬 <b>Ciências</b> projetos experimentais e iniciação científica</div><div>💻 <b>Computação</b> dados, IA e tecnologia aplicada</div></div><button class="primary" onclick="go('opps');closeModal()">Ver oportunidades de pesquisa</button>`)}
